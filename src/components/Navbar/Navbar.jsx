@@ -24,7 +24,7 @@ const Example = ({ history }) => {
   const toggle = () => setIsOpen(!isOpen);
   return (
     <div>
-      <Navbar color='dark' dark expand='md'>
+      <Navbar color='dark' dark expand='md' className='sticky-top'>
         <Container>
           <NavbarBrand href='/'>Presummit Ecommerce</NavbarBrand>
           <NavbarToggler onClick={toggle} />

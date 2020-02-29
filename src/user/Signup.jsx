@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Alert } from 'reactstrap';
+import { Container, Alert, Spinner } from 'reactstrap';
 import './Signup.css';
 import { API } from '../config';
 import axios from 'axios';
@@ -14,6 +14,8 @@ const Signup = () => {
     success: false
   });
 
+  const [loading, setLoading] = useState(false)
+
   const { name, email, password, password2, error, success } = formData;
   // high order function
   const handleChange = name => event => {
@@ -22,14 +24,23 @@ const Signup = () => {
 
   const handleSumit = e => {
     e.preventDefault();
-    signup({ name, email, password }).then(data => {
-      if (data) {
-        console.log(data);
-      }
-    });
+    if (password !== '' && password2 !== '' && password === password2) {
+      signup({ name, email, password }).then(data => {
+        if (data) {
+          console.log(data);
+        }
+      });
+    } else {
+      setFormData({
+        ...formData,
+        error: 'Passwords don\'t matched',
+        success: false
+      });
+    }
   };
 
   const signup = user => {
+    setLoading(true)
     return axios
       .post(`${API}/signup`, user, {
         headers: {
@@ -37,6 +48,7 @@ const Signup = () => {
         }
       })
       .then(res => {
+        setLoading(false)
         setFormData({
           ...formData,
           name: '',
@@ -47,6 +59,7 @@ const Signup = () => {
         });
       })
       .catch(err => {
+        setLoading(false);
         if (err.response.data.err) {
           setFormData({
             ...formData,
@@ -87,60 +100,70 @@ const Signup = () => {
     </div>
   );
 
+  const loadingContent = (
+    <Spinner style={{ width: '3rem', height: '3rem' }} className='spinner'/>
+  )
+
+  const formContent = (
+    <form>
+      <h3>Sign Up</h3>
+      {showError}
+      {showSuccess}
+      <div className='form-group'>
+        <label>Name</label>
+        <input
+          type='text'
+          className='form-control'
+          placeholder='Enter name'
+          onChange={handleChange('name')}
+          value={name}
+        />
+      </div>
+      <div className='form-group'>
+        <label>Email address</label>
+        <input
+          type='email'
+          className='form-control'
+          placeholder='Enter email'
+          onChange={handleChange('email')}
+          value={email}
+        />
+      </div>
+      <div className='form-group'>
+        <label>Password</label>
+        <input
+          type='password'
+          className='form-control'
+          placeholder='Enter password'
+          onChange={handleChange('password')}
+          value={password}
+        />
+      </div>
+      <div className='form-group'>
+        <label>Confirm Password</label>
+        <input
+          type='password'
+          className='form-control'
+          placeholder='Enter password'
+          onChange={handleChange('password2')}
+          value={password2}
+        />
+      </div>
+      <button
+        type='submit'
+        className='btn btn-dark btn-block'
+        onClick={handleSumit}
+      >
+        Submit
+      </button>
+    </form>
+  );
+
+
   return (
     <Container className='App'>
-      <form>
-        <h3>Sign Up</h3>
-        {showError}
-        {showSuccess}
-        <div className='form-group'>
-          <label>Name</label>
-          <input
-            type='text'
-            className='form-control'
-            placeholder='Enter name'
-            onChange={handleChange('name')}
-            value={name}
-          />
-        </div>
-        <div className='form-group'>
-          <label>Email address</label>
-          <input
-            type='email'
-            className='form-control'
-            placeholder='Enter email'
-            onChange={handleChange('email')}
-            value={email}
-          />
-        </div>
-        <div className='form-group'>
-          <label>Password</label>
-          <input
-            type='password'
-            className='form-control'
-            placeholder='Enter password'
-            onChange={handleChange('password')}
-            value={password}
-          />
-        </div>
-        <div className='form-group'>
-          <label>Confirm Password</label>
-          <input
-            type='password'
-            className='form-control'
-            placeholder='Enter password'
-            onChange={handleChange('password2')}
-            value={password2}
-          />
-        </div>
-        <button
-          type='submit'
-          className='btn btn-dark btn-block'
-          onClick={handleSumit}
-        >
-          Submit
-        </button>
-      </form>
+      {loading ? loadingContent: formContent}
+      
     </Container>
   );
 };
