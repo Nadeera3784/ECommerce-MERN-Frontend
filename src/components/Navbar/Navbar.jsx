@@ -10,6 +10,7 @@ import {
   Container
 } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
+import { isAuthenticated } from '../../helper/index';
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
@@ -35,22 +36,39 @@ const Example = ({ history }) => {
                   Home
                 </NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink
-                  href='/signin'
-                  className={`${isActive(history, '/signin')}`}
-                >
-                  Login
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  href='/signup'
-                  className={`${isActive(history, '/signup')}`}
-                >
-                  Register
-                </NavLink>
-              </NavItem>
+              {!isAuthenticated() && (
+                <>
+                  <NavItem>
+                    <NavLink
+                      href='/signin'
+                      className={`${isActive(history, '/signin')}`}
+                    >
+                      Login
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      href='/signup'
+                      className={`${isActive(history, '/signup')}`}
+                    >
+                      Register
+                    </NavLink>
+                  </NavItem>
+                </>
+              )}
+
+              {isAuthenticated() && (
+                <>
+                  <NavItem>
+                    <NavLink
+                      href='/signout'
+                      className={`${isActive(history, '/signout')}`}
+                    >
+                      Signout
+                    </NavLink>
+                  </NavItem>
+                </>
+              )}
             </Nav>
             {/* <NavbarText>Simple Text</NavbarText> */}
           </Collapse>

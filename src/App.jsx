@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <Container>
-        <Link className='pt-5'>
+        <Link className='pt-5' to='/'>
           <img
             src={require('./assests/showcase.png')}
             alt='showcase'

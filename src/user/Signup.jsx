@@ -25,11 +25,7 @@ const Signup = () => {
   const handleSumit = e => {
     e.preventDefault();
     if (password !== '' && password2 !== '' && password === password2) {
-      signup({ name, email, password }).then(data => {
-        if (data) {
-          console.log(data);
-        }
-      });
+      signup({ name, email, password })
     } else {
       setFormData({
         ...formData,
@@ -54,6 +50,7 @@ const Signup = () => {
           name: '',
           email: '',
           password: '',
+          password2,
           error: '',
           success: true
         });
