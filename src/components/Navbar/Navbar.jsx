@@ -40,7 +40,7 @@ const Example = ({ history }) => {
                   href='/signin'
                   className={`${isActive(history, '/signin')}`}
                 >
-                  Signin
+                  Login
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -48,7 +48,7 @@ const Example = ({ history }) => {
                   href='/signup'
                   className={`${isActive(history, '/signup')}`}
                 >
-                  Signup
+                  Register
                 </NavLink>
               </NavItem>
             </Nav>
