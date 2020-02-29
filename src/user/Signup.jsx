@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Alert, Spinner } from 'reactstrap';
 import './Signup.css';
 import { API } from '../config';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { isAuthenticated } from '../helper/index';
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -17,6 +19,17 @@ const Signup = () => {
   const [loading, setLoading] = useState(false)
 
   const { name, email, password, password2, error, success } = formData;
+  const { user } = isAuthenticated();
+
+  useEffect(() => {
+    if (localStorage.getItem('jwtEcom')) {
+      if (user && user.role === 1) {
+        window.location.href = '/admin/dashboard';
+      } else {
+        window.location.href = '/user/dashboard';
+      }
+    }
+  });
   // high order function
   const handleChange = name => event => {
     setFormData({ ...formData, error: '', [name]: event.target.value });

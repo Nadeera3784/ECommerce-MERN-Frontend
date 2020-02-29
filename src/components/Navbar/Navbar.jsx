@@ -36,6 +36,27 @@ const Example = ({ history }) => {
                   Home
                 </NavLink>
               </NavItem>
+              {isAuthenticated() && isAuthenticated().user.role === 0 && (
+                <NavItem>
+                  <NavLink
+                    href='/user/dashboard'
+                    className={`${isActive(history, '/user/dashboard')}`}
+                  >
+                    User Dashboard
+                  </NavLink>
+                </NavItem>
+              )}
+              {isAuthenticated() && isAuthenticated().user.role === 1 && (
+                <NavItem>
+                  <NavLink
+                    href='/admin/dashboard'
+                    className={`${isActive(history, '/admin/dashboard')}`}
+                  >
+                    Admin Dashboard
+                  </NavLink>
+                </NavItem>
+              )}
+
               {!isAuthenticated() && (
                 <>
                   <NavItem>

@@ -4,6 +4,8 @@ import './Signup.css';
 import { API } from '../config';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import { isAuthenticated } from '../helper/index';
+
 const Signin = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -15,10 +17,12 @@ const Signin = () => {
   const [redirectToReferrer, setRedirectToReferrer] = useState(false);
 
   const { email, password, error, success } = formData;
+  const { user } = isAuthenticated();
 
   useEffect(() => {
-    if (redirectToReferrer) {
-      window.location.href = '/';
+    if (redirectToReferrer || localStorage.getItem('jwtEcom')) {
+      
+        window.location.href = '/';
     }
   });
   // high order function
